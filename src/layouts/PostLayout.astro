@@ -1,460 +1,851 @@
 ---
+// src/layouts/PostLayout.astro
 import BaseLayout from './BaseLayout.astro';
-import type { CollectionEntry } from 'astro:content';
-import TrainingCTA from '../components/TrainingCTA.astro';
+import { getCollection } from 'astro:content';
 
 interface Props {
-  post: CollectionEntry<'posts'>;
+  content: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    author: string;
+    category: string;
+    tags: string[];
+    image: string;
+    readTime: number;
+  };
 }
 
-const { post } = Astro.props;
-const { title, description, pubDate, updatedDate, tags, category } = post.data;
+const { content } = Astro.props;
 
-const formatDate = (date: Date) =>
-  date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+// Get all posts for sidebar
+const allPosts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const tagColor = (tag: string): string => {
-  const t = tag.toLowerCase();
-  
-  // Alternate between blue and teal for better visual variety
-  if (t.includes('fast formula') || t.includes('technical')) return 'blue';
-  if (t.includes('core hr') || t.includes('configuration')) return 'teal';
-  if (t.includes('payroll') || t.includes('functional')) return 'blue';
-  if (t.includes('time') || t.includes('labor') || t.includes('integration')) return 'teal';
-  if (t.includes('benefit') || t.includes('absence')) return 'blue';
-  if (t.includes('advanced') || t.includes('intermediate') || t.includes('beginner')) return 'teal';
-  
-  // Hash-based alternation for unknown tags
-  return t.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 2 === 0 ? 'blue' : 'teal';
-};
+const recentPosts = allPosts.slice(0, 5);
 
-const getCategoryColor = (cat?: string): string => {
-  if (!cat) return 'blue';
-  const c = cat.toLowerCase();
-  if (c === 'technical') return 'blue';
-  if (c === 'functional') return 'teal';
-  if (c === 'trainings') return 'teal';
-  return 'blue';
+const formatShort = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const readMinutes = (body: string): number =>
+  Math.max(1, Math.ceil(body.trim().split(/\s+/).length / 200));
+
+const depth = (mins: number) =>
+  mins >= 18
+    ? { label: 'Deep', bars: '▰▰▰', cls: 'd3' }
+    : mins >= 9
+    ? { label: 'Applied', bars: '▰▰▱', cls: 'd2' }
+    : { label: 'Foundational', bars: '▰▱▱', cls: 'd1' };
+
+// Get unique tags from all posts
+const allTags = [...new Set(allPosts.flatMap(post => post.data.tags || []))];
+
+const author = {
+  name: 'Vaibhav Chavan',
+  bio: 'Oracle Fusion HCM Solution Architect with 10+ years of implementation experience',
+  image: '/images/authors/vaibhav-chavan.jpg'
 };
 ---
 
-<BaseLayout title={title} description={description} ogType="article">
-  <article class="post">
-    <!-- ════════ POST HEADER ════════ -->
-    <header class="post-header prose-container">
-      <div class="header-top">
-        {category && (
-          <span class={`category-badge category-${getCategoryColor(category)}`}>
-            {category}
-          </span>
+<BaseLayout title={content.title} description={content.description}>
+  <div class="post-page">
+    <div class="post-wrapper">
+      <!-- MAIN CONTENT (LEFT) -->
+      <main class="post-content">
+        <!-- POST HEADER -->
+        <article class="post-article">
+          <div class="post-header">
+            <div class="post-meta-top">
+              <span class="post-category">{content.category}</span>
+              <span class="post-date">{formatShort(content.pubDate)}</span>
+            </div>
+
+            <h1 class="post-title">{content.title}</h1>
+
+            <div class="post-excerpt">
+              <em>{content.description}</em>
+            </div>
+
+            {content.image && (
+              <div class="post-image">
+                <img 
+                  src={content.image} 
+                  alt={content.title}
+                  onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22%3E%3Crect fill=%22%23E8F2F8%22 width=%22800%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22%3E📝%3C/text%3E%3C/svg%3E'"
+                />
+              </div>
+            )}
+
+            <div class="post-meta-info">
+              <span class="author-name">{content.author}</span>
+              <span class="read-time">{content.readTime || readMinutes(await Astro.props.children)} min read</span>
+            </div>
+          </div>
+
+          <!-- POST BODY -->
+          <div class="post-body">
+            <slot />
+          </div>
+
+          <!-- POST TAGS -->
+          {content.tags && content.tags.length > 0 && (
+            <div class="post-tags">
+              <h4>Tagged:</h4>
+              <div class="tags-list">
+                {content.tags.map(tag => (
+                  <span class="tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <!-- AUTHOR BIO AT END -->
+          <div class="post-author-section">
+            <div class="author-avatar">
+              <img 
+                src={author.image} 
+                alt={author.name}
+                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%230F3B66%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2250%22 fill=%22white%22%3EVC%3C/text%3E%3C/svg%3E'"
+              />
+            </div>
+            <div class="author-info">
+              <h4>{author.name}</h4>
+              <p class="author-bio">{author.bio}</p>
+              <a href="/about" class="author-link">View Full Profile →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- RELATED POSTS -->
+        {allPosts.length > 1 && (
+          <section class="related-posts">
+            <h3>More Articles</h3>
+            <div class="related-posts-grid">
+              {allPosts.slice(0, 3).map(post => (
+                <a href={`/posts/${post.slug}`} class="related-post-item">
+                  <div class="related-post-header">
+                    <h4>{post.data.title}</h4>
+                  </div>
+                  <div class="related-post-meta">
+                    <span>{formatShort(post.data.pubDate)}</span>
+                    <span>{post.data.readTime || 5} min</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
         )}
-        <time class="post-date" datetime={pubDate.toISOString()}>
-          {formatDate(pubDate)}
-        </time>
-      </div>
+      </main>
 
-      <h1 class="post-title">{title}</h1>
-
-      {description && <p class="post-lede">{description}</p>}
-
-      {tags.length > 0 && (
-        <div class="post-tags">
-          {tags.slice(0, 5).map((tag) => (
-            <span class={`tag tag-${tagColor(tag)}`}>{tag}</span>
-          ))}
+      <!-- SIDEBAR (RIGHT) -->
+      <aside class="post-sidebar">
+        
+        <!-- SEARCH -->
+        <div class="sidebar-box">
+          <h3>Search</h3>
+          <form class="search-form">
+            <input type="text" placeholder="Search articles..." name="q">
+            <button type="submit">🔍</button>
+          </form>
         </div>
-      )}
 
-      <div class="post-meta">
-        <span class="meta-item">Oracle Fusion HCM</span>
-        {updatedDate && (
-          <>
-            <span class="meta-separator">·</span>
-            <span class="meta-item">Updated {formatDate(updatedDate)}</span>
-          </>
+        <!-- QUICK INFO -->
+        <div class="sidebar-box info-box">
+          <h3>Article Info</h3>
+          <div class="info-item">
+            <span class="label">Category:</span>
+            <span class="value">{content.category}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Published:</span>
+            <span class="value">{formatShort(content.pubDate)}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Read Time:</span>
+            <span class="value">{content.readTime || 5} min</span>
+          </div>
+        </div>
+
+        <!-- LATEST POSTS -->
+        <div class="sidebar-box">
+          <h3>Latest Posts</h3>
+          <div class="recent-posts">
+            {recentPosts.map((post) => (
+              <a href={`/posts/${post.slug}`} class="recent-post-item">
+                <div class="recent-post-title">{post.data.title}</div>
+                <div class="recent-post-date">{formatShort(post.data.pubDate)}</div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- AUTHOR BIO -->
+        <div class="sidebar-box author-box">
+          <h3>Author</h3>
+          <div class="author-avatar-small">
+            <img 
+              src={author.image} 
+              alt={author.name}
+              onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect fill=%22%230F3B66%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2250%22 fill=%22white%22%3EVC%3C/text%3E%3C/svg%3E'"
+            />
+          </div>
+          <h4>{author.name}</h4>
+          <p class="author-bio-short">{author.bio}</p>
+          <a href="/about" class="author-link">View Profile →</a>
+        </div>
+
+        <!-- TAGS -->
+        {allTags.length > 0 && (
+          <div class="sidebar-box">
+            <h3>Topics</h3>
+            <div class="tags-cloud">
+              {allTags.slice(0, 12).map((tag) => (
+                <span class="tag">{tag}</span>
+              ))}
+            </div>
+          </div>
         )}
-      </div>
-    </header>
 
-    <!-- ════════ POST BODY ════════ -->
-    <div class="post-body prose-container">
-      <slot />
+        <!-- RESOURCES -->
+        <div class="sidebar-box products-box">
+          <h3>Resources</h3>
+          <div class="products-list">
+            <div class="product-item">
+              <span class="product-icon">📚</span>
+              <div class="product-name">Implementation Guide</div>
+            </div>
+            <div class="product-item">
+              <span class="product-icon">⚡</span>
+              <div class="product-name">Fast Formula Mastery</div>
+            </div>
+            <div class="product-item">
+              <span class="product-icon">📊</span>
+              <div class="product-name">Config Checklist</div>
+            </div>
+          </div>
+        </div>
+
+      </aside>
     </div>
+  </div>
+</BaseLayout>
 
-    <!-- ════════ POST CTA ════════ -->
-    <div class="prose-container">
-      <TrainingCTA />
-    </div>
+<style>
+  .post-page {
+    --primary: #0F3B66;
+    --primary-light: #E8F2F8;
+    --accent: #06B6D4;
+    --accent-light: #CCF0FF;
+    --text-strong: #0F3B66;
+    --text-primary: #1E293B;
+    --text-muted: #334155;
+    --text-faint: #64748B;
+    --surface: #FFFFFF;
+    --bg: #F0F7FB;
+    --border: #D1E0ED;
+  }
 
-    <!-- ════════ POST FOOTER ════════ -->
-    <footer class="post-footer prose-container">
-      <a href="/" class="back-link">← Back to articles</a>
-    </footer>
-  </article>
+  .post-wrapper {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2.5rem;
+  }
 
-  <style>
-    :root {
-      --primary: #0F3B66;
-      --primary-light: #E8F2F8;
-      --accent: #06B6D4;
-      --accent-light: #CCF0FF;
-      --text-strong: #0F3B66;
-      --text-primary: #1E293B;
-      --text-muted: #334155;
-      --text-faint: #64748B;
-      --surface: #FFFFFF;
-      --bg: #F0F7FB;
-      --border: #D1E0ED;
+  .post-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  /* POST ARTICLE */
+  .post-article {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .post-header {
+    padding: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .post-category {
+    display: inline-block;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .post-date {
+    color: var(--text-faint);
+    font-size: 0.9rem;
+  }
+
+  .post-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--text-strong);
+    margin: 0 0 1.5rem;
+  }
+
+  .post-excerpt {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 2rem;
+    padding: 1.5rem;
+    background: var(--primary-light);
+    border-left: 4px solid var(--accent);
+    border-radius: 4px;
+  }
+
+  .post-excerpt em {
+    font-style: italic;
+    color: var(--text-primary);
+  }
+
+  .post-image {
+    width: 100%;
+    margin: 2rem 0;
+  }
+
+  .post-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .post-meta-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .author-name {
+    font-weight: 600;
+    color: var(--text-strong);
+  }
+
+  .read-time {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* POST BODY */
+  .post-body {
+    padding: 3rem;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-primary);
+  }
+
+  .post-body :global(h2) {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 2.5rem 0 1rem;
+    border-bottom: 3px solid var(--accent-light);
+    padding-bottom: 0.75rem;
+  }
+
+  .post-body :global(h3) {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 2rem 0 0.75rem;
+  }
+
+  .post-body :global(p) {
+    margin-bottom: 1.25rem;
+  }
+
+  .post-body :global(code) {
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+  }
+
+  .post-body :global(pre) {
+    background: var(--primary);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .post-body :global(ul),
+  .post-body :global(ol) {
+    margin: 1.5rem 0 1.5rem 2rem;
+  }
+
+  .post-body :global(li) {
+    margin-bottom: 0.75rem;
+  }
+
+  .post-body :global(blockquote) {
+    border-left: 4px solid var(--accent);
+    padding-left: 1.5rem;
+    margin: 1.5rem 0;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* POST TAGS */
+  .post-tags {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    background: var(--primary-light);
+  }
+
+  .post-tags h4 {
+    margin: 0 0 1rem;
+    color: var(--text-strong);
+    font-size: 0.95rem;
+  }
+
+  .tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .tag {
+    display: inline-block;
+    background: white;
+    color: var(--primary);
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* AUTHOR SECTION AT END */
+  .post-author-section {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 2rem;
+    padding: 2.5rem 3rem;
+    background: var(--primary-light);
+    border-top: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .author-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: white;
+    border: 3px solid var(--accent);
+  }
+
+  .author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .author-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .author-info h4 {
+    margin: 0;
+    color: var(--text-strong);
+    font-size: 1.2rem;
+  }
+
+  .author-bio {
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .author-link {
+    display: inline-block;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    width: fit-content;
+  }
+
+  .author-link:hover {
+    transform: translateX(4px);
+  }
+
+  /* RELATED POSTS */
+  .related-posts {
+    padding-top: 1rem;
+  }
+
+  .related-posts h3 {
+    color: var(--text-strong);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .related-posts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .related-post-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .related-post-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(6, 182, 212, 0.1);
+  }
+
+  .related-post-header h4 {
+    margin: 0;
+    color: var(--text-strong);
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .related-post-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+  }
+
+  /* SIDEBAR */
+  .post-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .sidebar-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+
+  .sidebar-box h3 {
+    margin: 0 0 1rem;
+    color: var(--text-strong);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .sidebar-box h4 {
+    margin: 0 0 0.5rem;
+    color: var(--text-strong);
+  }
+
+  /* SEARCH */
+  .search-form {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .search-form input {
+    flex: 1;
+    padding: 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  .search-form input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+  }
+
+  .search-form button {
+    padding: 0.65rem 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .search-form button:hover {
+    background: var(--text-strong);
+  }
+
+  /* INFO BOX */
+  .info-box .info-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+
+  .info-item:last-child {
+    border-bottom: none;
+  }
+
+  .info-item .label {
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .info-item .value {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* RECENT POSTS */
+  .recent-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .recent-post-item {
+    padding: 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    border-left: 3px solid var(--border);
+  }
+
+  .recent-post-item:hover {
+    border-left-color: var(--accent);
+    background: var(--primary-light);
+  }
+
+  .recent-post-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-strong);
+    line-height: 1.3;
+  }
+
+  .recent-post-date {
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    margin-top: 0.25rem;
+  }
+
+  /* AUTHOR BOX */
+  .author-box {
+    text-align: center;
+  }
+
+  .author-avatar-small {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 0.75rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--primary-light);
+  }
+
+  .author-avatar-small img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .author-box h4 {
+    margin: 0 0 0.5rem;
+  }
+
+  .author-bio-short {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0.5rem 0 1rem;
+  }
+
+  /* TAGS CLOUD */
+  .tags-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tags-cloud .tag {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .tags-cloud .tag:hover {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  /* PRODUCTS BOX */
+  .products-box {
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent-light) 100%);
+  }
+
+  .products-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .product-item {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .product-item:hover {
+    transform: translateX(4px);
+  }
+
+  .product-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .product-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-strong);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .post-wrapper {
+      grid-template-columns: 1fr;
+      gap: 2rem;
     }
 
-    .post {
-      background: var(--surface);
-      color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      padding-block: 3rem 2rem;
+    .post-author-section {
+      grid-template-columns: 100px 1fr;
     }
 
-    .prose-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 24px;
+    .author-avatar {
+      width: 100px;
+      height: 100px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .post-wrapper {
+      padding: 0 16px;
     }
 
-    /* ════════ HEADER ════════ */
     .post-header {
-      margin-bottom: 3rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem;
     }
 
-    .header-top {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .category-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.4rem 0.9rem;
-      border-radius: 6px;
-    }
-
-    .category-blue {
-      background: var(--primary-light);
-      color: var(--primary);
-    }
-
-    .category-teal {
-      background: var(--accent-light);
-      color: var(--accent);
-    }
-
-    .post-date {
-      font-size: 13px;
-      color: var(--text-faint);
-      font-weight: 500;
+    .post-body {
+      padding: 2rem 1.5rem;
     }
 
     .post-title {
-      font-size: clamp(1.75rem, 4vw, 2.5rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-      margin: 0 0 1rem;
-      color: var(--text-strong);
+      font-size: 1.5rem;
     }
 
-    .post-lede {
-      font-size: 1.1rem;
-      font-style: italic;
-      color: var(--text-muted);
-      line-height: 1.7;
-      margin: 0 0 1.5rem;
-      padding-left: 1rem;
-      border-left: 3px solid var(--accent);
-      max-width: 65ch;
+    .post-meta-top {
+      margin-bottom: 1rem;
     }
 
-    /* ════════ TAGS ════════ */
     .post-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
+      padding: 1.5rem;
     }
 
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: capitalize;
-      padding: 0.4rem 0.85rem;
-      border-radius: 20px;
-      border: 1px solid;
-      transition: all 0.2s ease;
+    .post-author-section {
+      grid-template-columns: 80px 1fr;
+      padding: 1.5rem;
+      gap: 1.5rem;
     }
 
-    .tag-blue {
-      background: var(--primary-light);
-      color: var(--primary);
-      border-color: var(--border);
+    .author-avatar {
+      width: 80px;
+      height: 80px;
     }
 
-    .tag-blue:hover {
-      border-color: var(--primary);
-      background: white;
+    .related-posts-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .post-wrapper {
+      padding: 0 12px;
+      gap: 1.5rem;
     }
 
-    .tag-teal {
-      background: var(--accent-light);
-      color: var(--accent);
-      border-color: var(--border);
+    .post-header {
+      padding: 1.5rem 1rem;
     }
 
-    .tag-teal:hover {
-      border-color: var(--accent);
-      background: white;
-    }
-
-    /* ════════ META ════════ */
-    .post-meta {
-      font-size: 13px;
-      color: var(--text-faint);
-      margin-top: 1.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .meta-item {
-      font-weight: 500;
-    }
-
-    .meta-separator {
-      color: var(--border);
-    }
-
-    /* ════════ BODY ════════ */
     .post-body {
-      font-size: 1.05rem;
-      line-height: 1.8;
-      margin-bottom: 4rem;
+      padding: 1.5rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    .post-title {
+      font-size: 1.3rem;
     }
 
     .post-body :global(h2) {
-      font-size: 1.75rem;
-      font-weight: 700;
-      color: var(--text-strong);
-      margin: 2.5rem 0 1rem;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
-    }
-
-    .post-body :global(h3) {
       font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--text-strong);
-      margin: 2rem 0 0.75rem;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
     }
-
-    .post-body :global(h4) {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin: 1.5rem 0 0.5rem;
-      letter-spacing: -0.01em;
-    }
-
-    .post-body :global(p) {
-      margin: 0 0 1.25rem;
-      color: var(--text-muted);
-    }
-
-    .post-body :global(a) {
-      color: var(--accent);
-      text-decoration: underline;
-      font-weight: 500;
-      transition: all 0.2s ease;
-    }
-
-    .post-body :global(a:hover) {
-      color: var(--primary);
-      text-decoration-color: var(--primary);
-    }
-
-    .post-body :global(strong) {
-      font-weight: 700;
-      color: var(--text-strong);
-    }
-
-    .post-body :global(em) {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .post-body :global(code) {
-      background: var(--primary-light);
-      color: var(--primary);
-      padding: 0.2em 0.4em;
-      border-radius: 4px;
-      font-family: 'Monaco', 'Courier New', monospace;
-      font-size: 0.9em;
-      font-weight: 500;
-    }
-
-    .post-body :global(pre) {
-      background: var(--primary-light);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 8px;
-      padding: 1.25rem;
-      overflow-x: auto;
-      margin: 1.5rem 0;
-    }
-
-    .post-body :global(pre code) {
-      background: none;
-      color: var(--primary);
-      padding: 0;
-    }
-
-    .post-body :global(ul),
-    .post-body :global(ol) {
-      margin: 1.25rem 0;
-      padding-left: 1.75rem;
-    }
-
-    .post-body :global(li) {
-      margin-bottom: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .post-body :global(li strong) {
-      color: var(--text-strong);
-    }
-
-    .post-body :global(blockquote) {
-      margin: 1.5rem 0;
-      padding-left: 1.25rem;
-      border-left: 3px solid var(--accent);
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    .post-body :global(img) {
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      max-width: 100%;
-      height: auto;
-      margin: 1.5rem 0;
-    }
-
-    .post-body :global(table) {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-      font-size: 0.95rem;
-    }
-
-    .post-body :global(th) {
-      background: var(--primary-light);
-      color: var(--primary);
-      padding: 0.75rem;
-      text-align: left;
-      font-weight: 700;
-      border: 1px solid var(--border);
-    }
-
-    .post-body :global(td) {
-      padding: 0.75rem;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-
-    .post-body :global(tr:nth-child(even)) {
-      background: var(--primary-light);
-    }
-
-    /* ════════ FOOTER ════════ */
-    .post-footer {
-      margin-top: 3rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-decoration: none;
-      border: none;
-      transition: all 0.2s ease;
-    }
-
-    .back-link:hover {
-      color: var(--accent);
-      transform: translateX(-4px);
-    }
-
-    /* ════════ RESPONSIVE ════════ */
-    @media (max-width: 768px) {
-      .prose-container {
-        padding: 0 16px;
-      }
-
-      .post-title {
-        font-size: 1.5rem;
-      }
-
-      .post-body {
-        font-size: 1rem;
-      }
-
-      .post-body :global(h2) {
-        font-size: 1.5rem;
-      }
-
-      .post-body :global(h3) {
-        font-size: 1.15rem;
-      }
-
-      .header-top {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .post-tags {
-        gap: 0.5rem;
-      }
-
-      .tag {
-        font-size: 11px;
-        padding: 0.35rem 0.75rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      * {
-        transition-duration: 0.001ms !important;
-        animation-duration: 0.001ms !important;
-      }
-    }
-  </style>
-</BaseLayout>
+  }
+</style>
