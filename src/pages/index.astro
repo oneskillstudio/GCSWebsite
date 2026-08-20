@@ -183,7 +183,7 @@ const author = {
             <p class="empty">No articles published yet. Check back soon!</p>
           ) : (
             <div class="articles-list-compact">
-              {allPosts.slice(0, 8).map((post) => {
+              {allPosts.slice(0, 5).map((post) => {
                 const d = cardData(post);
                 return (
                   <a href={`/posts/${post.slug}`} class="article-item-compact">
@@ -554,7 +554,8 @@ const author = {
     font-size: 0.95rem;
     color: var(--text-muted);
     max-width: 65ch;
-    margin: 0 auto;
+    margin: 0 ;
+    text-align: left;
     line-height: 1.6;
   }
 
