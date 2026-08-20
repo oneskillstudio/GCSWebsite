@@ -7,38 +7,11 @@
     <!-- LOGO SECTION -->
     <div class="footer-logo-section">
       <a href="/" class="footer-logo">
-        <span class="logo-bracket">[</span><span class="logo-text">GCS</span><span class="logo-bracket">]</span>
-        <span class="logo-subtitle">GrowCloudSkills</span>
+        <span class="logo-badge">[GCS]</span>
+        <span class="logo-text">GrowCloudSkills</span>
       </a>
-      <p class="footer-description">
-        OneSkill Studio is a knowledge hub for Oracle Fusion HCM professionals, providing deep-dive technical guides, 
-        functional expertise, and real-world implementation insights to help you master enterprise HCM solutions.
-      </p>
-    </div>
-
-    <!-- NAVIGATION SECTION -->
-    <div class="footer-nav-section">
-      <h4>Explore</h4>
-      <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/technical">Technical</a></li>
-        <li><a href="/functional">Functional</a></li>
-        <li><a href="/trainings">Trainings</a></li>
-      </ul>
-    </div>
-
-    <!-- MORE SECTION -->
-    <div class="footer-nav-section">
-      <h4>More</h4>
-      <ul>
-        <li><a href="/about">About</a></li>
-        <li><a href="https://linkedin.com/in/vaibhav-chavan" target="_blank">LinkedIn</a></li>
-      </ul>
-    </div>
-
-    <!-- SOCIAL SECTION -->
-    <div class="footer-social-section">
-      <h4>Connect</h4>
+      
+      <!-- SOCIAL ICONS (Below Logo) -->
       <div class="social-links">
         <a href="https://linkedin.com/in/vaibhav-chavan" title="LinkedIn" target="_blank">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -61,6 +34,31 @@
           </svg>
         </a>
       </div>
+
+      <!-- SHORT DESCRIPTION (Reduced) -->
+      <p class="footer-description-short">
+        Oracle Fusion HCM knowledge hub for professionals.
+      </p>
+    </div>
+
+    <!-- EXPLORE SECTION (Moved right) -->
+    <div class="footer-nav-section">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/technical">Technical</a></li>
+        <li><a href="/functional">Functional</a></li>
+        <li><a href="/trainings">Trainings</a></li>
+      </ul>
+    </div>
+
+    <!-- MORE SECTION (Moved right) -->
+    <div class="footer-nav-section">
+      <h4>More</h4>
+      <ul>
+        <li><a href="/about">About</a></li>
+        <li><a href="https://linkedin.com/in/vaibhav-chavan" target="_blank">LinkedIn</a></li>
+      </ul>
     </div>
   </div>
 
@@ -84,7 +82,7 @@
     margin: 0 auto;
     padding: 3rem 2rem;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1fr 1fr;
     gap: 3rem;
   }
 
@@ -92,17 +90,16 @@
   .footer-logo-section {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
   }
 
   .footer-logo {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     text-decoration: none;
     color: #003b66;
     font-weight: 700;
-    font-size: 1.1rem;
     transition: color 0.2s;
     width: fit-content;
   }
@@ -111,29 +108,67 @@
     color: #0091b8;
   }
 
-  .logo-bracket {
-    color: #0091b8;
+  /* LOGO BADGE */
+  .logo-badge {
+    background: linear-gradient(135deg, #0091b8 0%, #06b6d4 100%);
+    color: white;
+    padding: 0.45rem 0.75rem;
+    border-radius: 6px;
     font-weight: 900;
-    font-size: 1.3rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
+  /* LOGO TEXT */
   .logo-text {
     color: #003b66;
     font-weight: 900;
-    letter-spacing: 0.05em;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
-  .logo-subtitle {
-    color: #666;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-left: 0.5rem;
+  /* SOCIAL LINKS */
+  .social-links {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
   }
 
-  .footer-description {
+  .social-links a {
+    display: inline-flex;
+    width: 38px;
+    height: 38px;
+    align-items: center;
+    justify-content: center;
+    color: #003b66;
+    transition: all 0.2s;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+  }
+
+  .social-links a:hover {
+    color: white;
+    background: #0091b8;
+    border-color: #0091b8;
+    transform: translateY(-3px);
+  }
+
+  .social-links svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* SHORT DESCRIPTION */
+  .footer-description-short {
     color: #666;
     font-size: 0.9rem;
-    line-height: 1.6;
+    line-height: 1.5;
     margin: 0;
   }
 
@@ -173,52 +208,6 @@
     color: #0091b8;
   }
 
-  /* SOCIAL SECTION */
-  .footer-social-section {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .footer-social-section h4 {
-    margin: 0;
-    color: #003b66;
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .social-links {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .social-links a {
-    display: inline-flex;
-    width: 32px;
-    height: 32px;
-    align-items: center;
-    justify-content: center;
-    color: #003b66;
-    transition: all 0.2s;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 50%;
-  }
-
-  .social-links a:hover {
-    color: white;
-    background: #0091b8;
-    border-color: #0091b8;
-  }
-
-  .social-links svg {
-    width: 16px;
-    height: 16px;
-  }
-
   /* COPYRIGHT SECTION */
   .footer-copyright {
     background: white;
@@ -240,6 +229,10 @@
       grid-template-columns: 1fr 1fr;
       gap: 2rem;
     }
+
+    .footer-logo-section {
+      grid-column: 1 / -1;
+    }
   }
 
   @media (max-width: 768px) {
@@ -255,6 +248,53 @@
 
     .footer-copyright {
       padding: 1.5rem 1rem;
+    }
+
+    .logo-text {
+      font-size: 1rem;
+    }
+
+    .logo-badge {
+      font-size: 0.8rem;
+      padding: 0.4rem 0.65rem;
+    }
+
+    .social-links a {
+      width: 36px;
+      height: 36px;
+    }
+
+    .social-links svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-container {
+      gap: 1.5rem;
+      padding: 1.5rem;
+    }
+
+    .footer-nav-section ul {
+      gap: 0.5rem;
+    }
+
+    .footer-nav-section h4 {
+      font-size: 0.85rem;
+    }
+
+    .footer-nav-section a {
+      font-size: 0.85rem;
+    }
+
+    .social-links a {
+      width: 34px;
+      height: 34px;
+    }
+
+    .logo-text {
+      font-size: 0.95rem;
     }
   }
 </style>
