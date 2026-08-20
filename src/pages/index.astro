@@ -1,0 +1,967 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allPosts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const formatShort = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+const readMinutes = (body: string): number =>
+  Math.max(1, Math.ceil(body.trim().split(/\s+/).length / 200));
+
+const depth = (mins: number) =>
+  mins >= 18
+    ? { label: 'Deep', bars: '▰▰▰', cls: 'd3' }
+    : mins >= 9
+    ? { label: 'Applied', bars: '▰▰▱', cls: 'd2' }
+    : { label: 'Foundational', bars: '▰▱▱', cls: 'd1' };
+
+const featured = allPosts[0];
+const recent = allPosts.slice(0, 5);
+
+const cardData = (post: typeof allPosts[number]) => {
+  const mins = readMinutes(post.body);
+  return { mins, tier: depth(mins) };
+};
+
+const modules = [
+  { name: 'Core HR', icon: '👥', color: 'blue' },
+  { name: 'Payroll', icon: '💰', color: 'teal' },
+  { name: 'Time & Labor', icon: '⏱️', color: 'blue' },
+  { name: 'Benefits', icon: '🏥', color: 'teal' },
+  { name: 'Recruiting', icon: '📋', color: 'blue' },
+  { name: 'Absence Mgmt', icon: '📅', color: 'teal' },
+];
+
+const paths = [
+  {
+    title: 'Technical',
+    icon: '💻',
+    description: 'Fast Formulas, SQL, HDL, integration patterns',
+    href: '/technical',
+    color: 'primary'
+  },
+  {
+    title: 'Functional',
+    icon: '⚙️',
+    description: 'Configuration, setup, best practices across modules',
+    href: '/functional',
+    color: 'accent'
+  },
+  {
+    title: 'Trainings',
+    icon: '📚',
+    description: 'Step-by-step guides, tutorials, skill development',
+    href: '/trainings',
+    color: 'accent'
+  },
+];
+---
+
+<BaseLayout title="OneSkill Studio - Oracle Fusion HCM Knowledge Hub">
+  <div class="hp">
+    <!-- ══════════ HERO BAND ══════════ -->
+    <section class="hp-shell">
+      <div class="hero-band">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="hero-eyebrow">Oracle Fusion HCM Cloud</div>
+            <h1>Master Enterprise <span class="accent">HCM Implementation</span></h1>
+            <p class="hero-lead">
+              Deep technical expertise and functional guidance for Oracle Fusion HCM. From Fast Formulas to multi-country architectures, learn production-ready solutions from real implementations.
+            </p>
+            <div class="hero-cta">
+              <a href="#learning-paths" class="btn btn--primary">Explore Learning Paths</a>
+              <a href="/technical" class="btn btn--secondary">Browse Articles</a>
+            </div>
+          </div>
+          
+          <div class="hero-visual">
+            <div class="ecosystem">
+              <div class="core">
+                <div class="core-circle">HCM Cloud</div>
+                <div class="module module-1">Core HR</div>
+                <div class="module module-2">Payroll</div>
+                <div class="module module-3">Time & Labor</div>
+                <div class="module module-4">Benefits</div>
+                <div class="module module-5">Recruiting</div>
+                <div class="module module-6">Absence</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ WHAT IS ORACLE FUSION HCM ══════════ -->
+    <section class="hp-shell section-what">
+      <div class="section-header">
+        <div class="section-kicker">Overview</div>
+        <h2>What is Oracle Fusion HCM Cloud?</h2>
+        <p class="section-lead">
+          Enterprise human capital management system powering global organizations. Unified platform for core HR, payroll, recruiting, benefits, and workforce management at scale.
+        </p>
+      </div>
+
+      <div class="capabilities">
+        <div class="capability">
+          <span class="cap-icon">🌍</span>
+          <h3>Global Scalability</h3>
+          <p>Multi-country, multi-currency implementations spanning APAC, EMEA, Americas with localized compliance</p>
+        </div>
+        <div class="capability">
+          <span class="cap-icon">🔧</span>
+          <h3>Deep Configuration</h3>
+          <p>Flexible architecture with Fast Formulas, HDL, and business rules engine for custom logic</p>
+        </div>
+        <div class="capability">
+          <span class="cap-icon">📊</span>
+          <h3>Real-time Analytics</h3>
+          <p>OTBI reporting, Redwood UI dashboards, and integrated BI for workforce insights</p>
+        </div>
+        <div class="capability">
+          <span class="cap-icon">🔗</span>
+          <h3>Enterprise Integration</h3>
+          <p>REST APIs, HCM Data Loader, and integration frameworks for seamless ecosystem connectivity</p>
+        </div>
+      </div>
+
+      <div class="modules-grid">
+        {modules.map((mod) => (
+          <div class={`module-card module-card--${mod.color}`}>
+            <span class="mod-icon">{mod.icon}</span>
+            <h4>{mod.name}</h4>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ══════════ LEARNING PATHS ══════════ -->
+    <section class="hp-shell section-paths" id="learning-paths">
+      <div class="section-header">
+        <div class="section-kicker">Three Ways to Learn</div>
+        <h2>Choose Your Learning Path</h2>
+        <p class="section-lead">
+          Whether you're diving into code, configuring business processes, or building skills, OneSkill Studio has the deep expertise you need.
+        </p>
+      </div>
+
+      <div class="paths-grid">
+        {paths.map((path) => (
+          <a href={path.href} class={`path-card path-card--${path.color}`}>
+            <div class="path-icon">{path.icon}</div>
+            <h3>{path.title}</h3>
+            <p>{path.description}</p>
+            <span class="path-arrow">Explore →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <!-- ══════════ WHY ONESKILL ══════════ -->
+    <section class="hp-shell section-why">
+      <div class="section-header">
+        <div class="section-kicker">Expertise</div>
+        <h2>Why OneSkill Studio?</h2>
+      </div>
+
+      <div class="reasons">
+        <div class="reason">
+          <div class="reason-num">1</div>
+          <h3>Production-Grade Solutions</h3>
+          <p>Code and configurations tested on live rollouts across multiple countries and thousands of employees</p>
+        </div>
+        <div class="reason">
+          <div class="reason-num">2</div>
+          <h3>Techno-Functional Edge</h3>
+          <p>Deep enough in code to know why something won't work. Deep enough in business to know what's needed</p>
+        </div>
+        <div class="reason">
+          <div class="reason-num">3</div>
+          <h3>Real-World Context</h3>
+          <p>Learn not just the what, but the why and the edge cases discovered in production implementations</p>
+        </div>
+        <div class="reason">
+          <div class="reason-num">4</div>
+          <h3>Continuously Updated</h3>
+          <p>Latest versions, new features, and emerging patterns documented as they're discovered</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ LATEST ARTICLES ══════════ -->
+    <section class="hp-shell section-articles">
+      <div class="section-header">
+        <div class="section-kicker">Knowledge Base</div>
+        <h2>Latest Articles</h2>
+        <p class="section-lead">
+          {allPosts.length} in-depth guides covering technical implementations, functional configurations, and hands-on tutorials
+        </p>
+      </div>
+
+      {allPosts.length === 0 ? (
+        <p class="empty">No articles published yet. Check back soon!</p>
+      ) : (
+        <div class="articles-grid">
+          {featured && (() => {
+            const d = cardData(featured);
+            return (
+              <a href={`/posts/${featured.slug}`} class="article-card article-card--featured">
+                <div class="card-badge">Featured</div>
+                <h3>{featured.data.title}</h3>
+                {featured.data.description && <p class="card-desc">{featured.data.description}</p>}
+                <div class="card-meta">
+                  <span class="meta-item">{d.mins} min read</span>
+                  <span class="meta-item">{formatShort(featured.data.pubDate)}</span>
+                </div>
+                <span class="read-more">Read Article →</span>
+              </a>
+            );
+          })()}
+
+          {recent.slice(1).map((post) => {
+            const d = cardData(post);
+            return (
+              <a href={`/posts/${post.slug}`} class="article-card">
+                <h3>{post.data.title}</h3>
+                {post.data.description && <p class="card-desc">{post.data.description}</p>}
+                <div class="card-meta">
+                  <span class="meta-item">{d.mins} min</span>
+                  <span class={`meta-item tier ${d.tier.cls}`}>{d.tier.label}</span>
+                  <span class="meta-item">{formatShort(post.data.pubDate)}</span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      )}
+
+      <div class="view-all">
+        <a href="/technical" class="btn btn--primary">View All Articles</a>
+      </div>
+    </section>
+
+    <!-- ══════════ CTA SECTION ══════════ -->
+    <section class="hp-shell section-cta">
+      <div class="cta-box">
+        <h2>Ready to deepen your Oracle Fusion HCM expertise?</h2>
+        <p>Start with Technical deep-dives, Functional configurations, or guided Trainings.</p>
+        <div class="cta-buttons">
+          <a href="/technical" class="btn btn--primary">Technical Articles</a>
+          <a href="/functional" class="btn btn--secondary">Functional Guides</a>
+          <a href="/trainings" class="btn btn--secondary">Trainings</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .hp {
+    --primary: #0F3B66;
+    --primary-light: #E8F2F8;
+    --accent: #06B6D4;
+    --accent-light: #CCF0FF;
+    --text-strong: #0F3B66;
+    --text-primary: #1E293B;
+    --text-muted: #334155;
+    --text-faint: #64748B;
+    --surface: #FFFFFF;
+    --bg: #F0F7FB;
+    --border: #D1E0ED;
+    
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    line-height: 1.68;
+    padding-block: 0;
+  }
+
+  .hp * {
+    box-sizing: border-box;
+  }
+
+  .hp-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ═══════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════ */
+
+  .hero-band {
+    background: linear-gradient(135deg, rgba(15, 59, 102, 0.03) 0%, rgba(6, 182, 212, 0.03) 100%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 3rem 0 4rem;
+    position: relative;
+  }
+
+  .hero-band::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    padding: 4rem 3rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .hero-eyebrow::after {
+    content: '';
+    height: 2px;
+    flex: 1;
+    max-width: 80px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    border-radius: 2px;
+  }
+
+  .hp h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: var(--text-strong);
+    margin: 0 0 1.5rem;
+  }
+
+  .hp h1 .accent {
+    color: var(--accent);
+  }
+
+  .hero-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 55ch;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn--primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn--primary:hover {
+    background: var(--text-strong);
+    transform: translateY(-2px);
+  }
+
+  .btn--secondary {
+    background: var(--primary-light);
+    color: var(--primary);
+    border: 1px solid var(--border);
+  }
+
+  .btn--secondary:hover {
+    background: white;
+    border-color: var(--primary);
+  }
+
+  /* Ecosystem Visual */
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ecosystem {
+    width: 100%;
+    height: 350px;
+    position: relative;
+  }
+
+  .core {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .core-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(15, 59, 102, 0.2);
+    z-index: 10;
+  }
+
+  .module {
+    position: absolute;
+    width: 90px;
+    height: 50px;
+    background: var(--surface);
+    border: 2px solid var(--primary);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    padding: 0.5rem;
+  }
+
+  .module-1 { top: 0; left: 50%; transform: translateX(-50%); }
+  .module-2 { top: 30px; right: 0; }
+  .module-3 { bottom: 30px; right: 0; }
+  .module-4 { bottom: 0; left: 50%; transform: translateX(-50%); }
+  .module-5 { bottom: 30px; left: 0; }
+  .module-6 { top: 30px; left: 0; }
+
+  /* ═══════════════════════════════════
+     SECTION STYLES
+     ═══════════════════════════════════ */
+
+  .section-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .section-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .hp h2 {
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--text-strong);
+    margin: 0 0 1rem;
+  }
+
+  .section-lead {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 65ch;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* What Section */
+  .section-what {
+    padding: 4rem 0;
+  }
+
+  .capabilities {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .capability {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.2s ease;
+  }
+
+  .capability:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.1);
+  }
+
+  .cap-icon {
+    font-size: 2.5rem;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .capability h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 0.5rem;
+  }
+
+  .capability p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+  }
+
+  .module-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .module-card--blue {
+    border-color: var(--primary);
+    background: var(--primary-light);
+  }
+
+  .module-card--blue:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .module-card--teal {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .module-card--teal:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .mod-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .module-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0;
+  }
+
+  /* Learning Paths */
+  .section-paths {
+    padding: 4rem 0;
+  }
+
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .path-card {
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 14px;
+    padding: 2.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .path-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .path-card--primary::before {
+    background: linear-gradient(90deg, var(--primary), var(--primary));
+  }
+
+  .path-card--accent::before {
+    background: linear-gradient(90deg, var(--accent), var(--accent));
+  }
+
+  .path-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(6, 182, 212, 0.15);
+  }
+
+  .path-card:hover::before {
+    opacity: 1;
+  }
+
+  .path-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .path-card h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 0.75rem;
+  }
+
+  .path-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+  }
+
+  .path-arrow {
+    font-weight: 600;
+    color: var(--accent);
+    transition: all 0.2s ease;
+  }
+
+  .path-card:hover .path-arrow {
+    transform: translateX(4px);
+    display: inline-block;
+  }
+
+  /* Why Section */
+  .section-why {
+    padding: 4rem 0;
+  }
+
+  .reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+
+  .reason {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.2s ease;
+  }
+
+  .reason:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .reason-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--primary-light);
+    color: var(--primary);
+    border-radius: 50%;
+    font-weight: 800;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
+
+  .reason h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 0.75rem;
+  }
+
+  .reason p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  /* Articles Section */
+  .section-articles {
+    padding: 4rem 0;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .article-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .article-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(6, 182, 212, 0.1);
+  }
+
+  .article-card--featured {
+    grid-row: span 2;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, var(--primary-light) 0%, white 100%);
+  }
+
+  .card-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    width: fit-content;
+  }
+
+  .article-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-strong);
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+  }
+
+  .article-card--featured h3 {
+    font-size: 1.5rem;
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 0 1rem;
+    flex-grow: 1;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .meta-item.tier {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .article-card:hover .read-more {
+    transform: translateX(4px);
+  }
+
+  .view-all {
+    text-align: center;
+  }
+
+  /* CTA Section */
+  .section-cta {
+    padding: 4rem 0 6rem;
+  }
+
+  .cta-box {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    border-radius: 16px;
+    padding: 4rem;
+    text-align: center;
+    color: white;
+  }
+
+  .cta-box h2 {
+    color: white;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: 1rem;
+  }
+
+  .cta-box p {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    max-width: 50ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-box .btn--primary {
+    background: white;
+    color: var(--primary);
+  }
+
+  .cta-box .btn--primary:hover {
+    background: var(--primary-light);
+  }
+
+  .cta-box .btn--secondary {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .cta-box .btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  /* ═══════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════ */
+
+  @media (max-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      padding: 3rem 2rem;
+    }
+
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .article-card--featured {
+      grid-row: span 1;
+    }
+
+    .capabilities {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hp-shell {
+      padding: 0 16px;
+    }
+
+    .hero-band {
+      margin: 2rem 0 3rem;
+    }
+
+    .hero-grid {
+      padding: 2rem 1.5rem;
+    }
+
+    .hp h1 {
+      font-size: 1.75rem;
+    }
+
+    .section-paths {
+      padding: 3rem 0;
+    }
+
+    .paths-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .capabilities {
+      grid-template-columns: 1fr;
+    }
+
+    .cta-box {
+      padding: 2.5rem 1.5rem;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+    }
+
+    .cta-box .btn {
+      width: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hp *,
+    .hp *::before,
+    .hp *::after {
+      transition-duration: 0.001ms !important;
+      animation-duration: 0.001ms !important;
+    }
+  }
+</style>

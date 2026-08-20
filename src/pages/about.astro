@@ -1,0 +1,846 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About OneSkill Studio"
+  description="Vaibhav Chavan — Oracle Fusion HCM Solution Architect. Deep expertise across technical and functional domains with multi-country implementations."
+>
+  <div class="ab">
+    <!-- ══════════ INTRO BAND ══════════ -->
+    <section class="ab-shell">
+      <div class="band">
+        <div class="band-grid">
+          <div>
+            <div class="ab-eyebrow">About</div>
+            <h1>Vaibhav Chavan</h1>
+            <div class="role">Oracle Fusion HCM Solution Architect</div>
+            <p>
+              Over the last decade I have architected and delivered complex Oracle Fusion HCM
+              implementations across US, APAC, and multi-country rollouts.
+            </p>
+            <p>
+              I work heavily on the <strong>techno-functional edge</strong> — deep enough in configuration to understand business requirements, and deep enough in code to know why it won't work that way yet.
+            </p>
+            <div class="expertise-areas">
+              <div class="areas-label">Core Expertise</div>
+              <div class="areas-row">
+                <span class="area"><b>Technical</b><span>Fast Formulas, SQL, HDL</span></span>
+                <span class="area"><b>Functional</b><span>Core HR, Payroll, Time & Labor</span></span>
+                <span class="area"><b>Architecture</b><span>Multi-country, Integration</span></span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="credentials">
+              <div class="cred-card">
+                <div class="cred-badge">🏆</div>
+                <span class="cred-label">Oracle Community</span>
+                <b>Active Member</b>
+              </div>
+              <div class="cred-card cred-card--secondary">
+                <div class="cred-badge">📚</div>
+                <span class="cred-label">Founded</span>
+                <b>OneSkill Studio</b>
+              </div>
+            </div>
+            <div class="stats">
+              <div class="stat"><b>5+</b><span>YEARS HCM CLOUD</span></div>
+              <div class="stat"><b>5+</b><span>IMPLEMENTATIONS</span></div>
+              <div class="stat"><b>6</b><span>MARKETS</span></div>
+              <div class="stat"><b>8</b><span>MODULES</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ WHY ONESKILL STUDIO ══════════ -->
+    <section class="ab-shell sec">
+      <div class="sec-head">
+        <div class="sec-kicker">Why this site exists</div>
+        <h2>The knowledge gap</h2>
+        <p class="sec-lead">
+          Oracle's official documentation covers <strong>what</strong> features do. Real implementations fail on the <strong>edges</strong>. Three production examples:
+        </p>
+      </div>
+      <div class="gaps">
+        <article class="gap">
+          <div class="gap-icon">⚙️</div>
+          <div class="gap-tag">Fast Formula Architecture</div>
+          <code class="ident">Variable Naming Constraints</code>
+          <p>
+            Why you can't use WHILE loops for dynamic variable assignment, forcing 12-tier unrolled patterns instead.
+          </p>
+        </article>
+        <article class="gap">
+          <div class="gap-icon">📊</div>
+          <div class="gap-tag">Payroll · Time & Labor</div>
+          <code class="ident">TCR vs TER Behavior</code>
+          <p>
+            How transaction evaluation rules actually execute — not what the parameter list implies they should do.
+          </p>
+        </article>
+        <article class="gap">
+          <div class="gap-icon">🔄</div>
+          <div class="gap-tag">Multi-Country · Core HR</div>
+          <code class="ident">Global Transfers</code>
+          <p>
+            What realistically happens to employment dates and assignment relationships — versus what documentation promises.
+          </p>
+        </article>
+      </div>
+      <p class="sec-lead sec-lead--after">
+        OneSkill Studio documents these exact behaviors and traps while they're still fresh from live production rollouts.
+      </p>
+    </section>
+
+    <!-- ══════════ WHAT YOU'LL FIND ══════════ -->
+    <section class="ab-shell sec">
+      <div class="sec-head">
+        <div class="sec-kicker">Coverage</div>
+        <h2>What you will find here</h2>
+      </div>
+      <div class="cover">
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">💻</span>
+          <div>
+            <h3>Production-ready code</h3>
+            <p>Fast Formulas with tested examples, traced from input contracts to final RETURN values.</p>
+          </div>
+        </article>
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">🔍</span>
+          <div>
+            <h3>Deep technical guides</h3>
+            <p>SQL optimization, HDL transformation patterns, and integration architectures explained in detail.</p>
+          </div>
+        </article>
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">⚡</span>
+          <div>
+            <h3>Functional best practices</h3>
+            <p>Configuration strategies for Core HR, Payroll, Time & Labor, Benefits, and Recruiting with real-world context.</p>
+          </div>
+        </article>
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">🌍</span>
+          <div>
+            <h3>Multi-country architectures</h3>
+            <p>Matrix accruals, leave policies, tax regulations — the patterns that scale across regions.</p>
+          </div>
+        </article>
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">🔧</span>
+          <div>
+            <h3>Troubleshooting & debugging</h3>
+            <p>Logging strategies, error patterns, and the profile options that silently break things.</p>
+          </div>
+        </article>
+        <article class="cov">
+          <span class="cov-ico" aria-hidden="true">📈</span>
+          <div>
+            <h3>Performance optimization</h3>
+            <p>Redwood UI patterns, bulk processing strategies, and the bottlenecks to avoid at scale.</p>
+          </div>
+        </article>
+      </div>
+      <div class="mods">
+        <span class="mod">Core HR</span>
+        <span class="mod">Payroll</span>
+        <span class="mod">Time & Labor</span>
+        <span class="mod">Benefits</span>
+        <span class="mod">Absence Management</span>
+        <span class="mod">Fast Formulas</span>
+        <span class="mod">OIC Integrations</span>
+        <span class="mod">SQL & Data</span>
+        <span class="mod">HDL Integration</span>
+        <span class="mod">Redwood UI</span>
+      </div>
+    </section>
+
+    <!-- ══════════ TECHNICAL EDGE ══════════ -->
+    <section class="ab-shell sec">
+      <div class="sec-head">
+        <div class="sec-kicker">Approach</div>
+        <h2>The techno-functional perspective</h2>
+      </div>
+      <div class="edge-content">
+        <article class="edge-card">
+          <div class="edge-number">1</div>
+          <h3>Deep technical understanding</h3>
+          <p>Know how Fast Formulas actually compile, how SQL queries perform at scale, how HDL transforms data — not just the configuration UI.</p>
+        </article>
+        <article class="edge-card">
+          <div class="edge-number">2</div>
+          <h3>Clear business context</h3>
+          <p>Understand what the business is trying to achieve — the gap between what they ask for and what the system can deliver.</p>
+        </article>
+        <article class="edge-card">
+          <div class="edge-number">3</div>
+          <h3>Production-grade solutions</h3>
+          <p>Solutions that don't just work in test — they scale, perform, and survive multi-country rollouts with millions of employees.</p>
+        </article>
+        <article class="edge-card">
+          <div class="edge-number">4</div>
+          <h3>Honest tradeoffs</h3>
+          <p>Every architectural choice has costs. We explore them upfront — not discovered in production two months later.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ══════════ CONTACT ══════════ -->
+    <section class="ab-shell sec sec--last">
+      <div class="contact">
+        <div>
+          <h3>Connect & Learn</h3>
+          <p>Questions, corrections, or real-world examples? Feedback makes these guides better.</p>
+        </div>
+        <div class="contact-links">
+          <a class="clink" href="https://www.linkedin.com/in/vaibhav-chavan" target="_blank">LinkedIn</a>
+          <a class="clink clink--go" href="/technical">Explore Articles</a>
+        </div>
+      </div>
+
+      <p class="note">
+        Content on this site reflects the author's independent views and experiences. OneSkill Studio is not affiliated with Oracle Corporation. Oracle and product names referenced are Oracle trademarks.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .ab {
+    --ab-bg: #F0F7FB;              /* Light blue background */
+    --ab-surface: #FFFFFF;         /* Keep white */
+    --ab-surface-2: #E8F2F8;       /* Light blue accent */
+    --ab-line: #D1E0ED;            /* Subtle borders */
+    --ab-line-soft: #E8F2F8;       /* Soft lines */
+    --ab-navy: #0F3B66;            /* Deep blue primary */
+    --ab-ink: #1E293B;             /* Darker text */
+    --ab-dim: #334155;             /* Medium gray - MORE READABLE */
+    --ab-faint: #64748B;           /* Light gray - DARKER, MORE READABLE */
+    --ab-blue: #0369A1;            /* Tech blue */
+    --ab-blue-lift: #0284C7;       /* Lighter blue */
+    --ab-accent: #06B6D4;          /* Teal accent */
+    --ab-accent-dp: #0891B2;       /* Dark teal */
+    --ab-orange: #06B6D4;          /* Teal (replaces orange) */
+    --ab-orange-dp: #0891B2;       /* Dark teal */
+    --ab-orange-wash: rgba(255, 124, 65, 0.09);
+    --ab-orange-edge: rgba(255, 124, 65, 0.42);
+    --ab-f: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    background: var(--ab-bg);
+    color: var(--ab-ink);
+    font-family: var(--ab-f);
+    font-size: 15px;
+    line-height: 1.72;
+    padding-block: 26px 8px;
+  }
+
+  .ab * {
+    box-sizing: border-box;
+  }
+
+  .ab-shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── INTRO BAND ── */
+  .band {
+    position: relative;
+    margin: 0 0 40px;
+    background: radial-gradient(70% 120% at 92% 14%, rgba(0, 84, 179, 0.05), transparent 58%),
+      linear-gradient(180deg, #FFFCF8 0%, var(--ab-surface-2) 100%);
+    border: 1px solid var(--ab-line);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .band::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ab-navy) 0%, var(--ab-blue) 46%, var(--ab-orange) 100%);
+  }
+
+  .band-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+    padding: 36px 34px 32px;
+  }
+
+  .ab-eyebrow {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ab-orange-dp);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ab-eyebrow::after {
+    content: '';
+    height: 2px;
+    flex: 1;
+    max-width: 120px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--ab-orange), transparent);
+  }
+
+  .ab h1 {
+    font-family: var(--ab-f);
+    font-weight: 800;
+    font-size: clamp(1.85rem, 3.4vw, 2.65rem);
+    line-height: 1.1;
+    letter-spacing: -0.038em;
+    color: var(--ab-navy);
+    margin: 0 0 6px;
+  }
+
+  .role {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ab-orange-dp);
+    letter-spacing: -0.01em;
+    margin-bottom: 20px;
+  }
+
+  .band p {
+    font-size: 14.5px;
+    color: var(--ab-dim);
+    margin: 0 0 14px;
+    max-width: 60ch;
+  }
+
+  .band p strong {
+    color: var(--ab-navy);
+    font-weight: 700;
+  }
+
+  .expertise-areas {
+    margin-top: 22px;
+  }
+
+  .areas-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ab-faint);
+    margin-bottom: 9px;
+  }
+
+  .areas-row {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+
+  .area {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 100px;
+    padding: 9px 11px;
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .area:hover {
+    border-color: var(--ab-orange-edge);
+    transform: translateY(-2px);
+  }
+
+  .area b {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ab-navy);
+    letter-spacing: 0.02em;
+  }
+
+  .area span {
+    font-size: 8px;
+    color: var(--ab-faint);
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .credentials {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 9px;
+    margin-bottom: 12px;
+  }
+
+  .cred-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 15px;
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+
+  .cred-card:hover {
+    border-color: var(--ab-orange-edge);
+    transform: translateY(-2px);
+  }
+
+  .cred-card--secondary {
+    border-color: var(--ab-accent-dp);
+  }
+
+  .cred-badge {
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .cred-label {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 9px;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--ab-faint);
+  }
+
+  .cred-card b {
+    color: var(--ab-navy);
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 9px;
+  }
+
+  .stat {
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 9px;
+    padding: 11px 12px;
+    text-align: center;
+  }
+
+  .stat b {
+    display: block;
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--ab-navy);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+  }
+
+  .stat span {
+    font-size: 9.5px;
+    color: var(--ab-faint);
+    letter-spacing: 0.03em;
+  }
+
+  /* ── SECTIONS ── */
+  .sec {
+    padding-bottom: 46px;
+  }
+
+  .sec--last {
+    padding-bottom: 20px;
+  }
+
+  .sec-head {
+    margin-bottom: 20px;
+  }
+
+  .sec-kicker {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ab-orange-dp);
+    margin-bottom: 8px;
+  }
+
+  .ab h2 {
+    font-family: var(--ab-f);
+    font-weight: 700;
+    font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+    letter-spacing: -0.032em;
+    color: var(--ab-navy);
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .sec-lead {
+    font-size: 14.5px;
+    color: var(--ab-dim);
+    max-width: 64ch;
+    margin: 12px 0 0;
+  }
+
+  .sec-lead--after {
+    margin-top: 22px;
+  }
+
+  .sec-lead strong {
+    color: var(--ab-navy);
+    font-weight: 700;
+  }
+
+  /* ── GAPS ── */
+  .gaps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 24px;
+  }
+
+  .gap {
+    position: relative;
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 12px;
+    padding: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(10, 42, 74, 0.03);
+    transition: all 0.2s ease;
+  }
+
+  .gap:hover {
+    border-color: var(--ab-orange-edge);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(10, 42, 74, 0.04), 0 16px 34px -20px rgba(10, 42, 74, 0.26);
+  }
+
+  .gap::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ab-navy), var(--ab-orange));
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .gap:hover::after {
+    opacity: 1;
+  }
+
+  .gap-icon {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .gap-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ab-faint);
+    margin-bottom: 11px;
+  }
+
+  .ab .ident {
+    display: block;
+    background: #F4F8FC;
+    border: 1px solid #D8E4F0;
+    border-left: 3px solid var(--ab-blue);
+    border-radius: 6px;
+    padding: 9px 11px;
+    margin-bottom: 13px;
+    font-family: var(--ab-f);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    color: var(--ab-navy);
+    word-break: break-all;
+    line-height: 1.45;
+  }
+
+  .gap p {
+    font-size: 13px;
+    color: var(--ab-dim);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  .gap p em {
+    font-style: normal;
+    color: var(--ab-orange-dp);
+    font-weight: 700;
+  }
+
+  /* ── COVERAGE ── */
+  .cover {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .cov {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 12px;
+    padding: 19px 20px;
+    transition: all 0.2s ease;
+  }
+
+  .cov:hover {
+    border-color: var(--ab-orange-edge);
+    transform: translateY(-2px);
+  }
+
+  .cov-ico {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: var(--ab-surface-2);
+    border: 1px solid var(--ab-line);
+    display: grid;
+    place-items: center;
+    font-size: 18px;
+  }
+
+  .ab .cov h3 {
+    font-family: var(--ab-f);
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ab-navy);
+    letter-spacing: -0.024em;
+    margin: 0 0 5px;
+    line-height: 1.35;
+  }
+
+  .cov p {
+    font-size: 12.5px;
+    color: var(--ab-dim);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .mods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 20px;
+  }
+
+  .mod {
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--ab-dim);
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 999px;
+    padding: 7px 14px;
+    transition: all 0.18s ease;
+  }
+
+  .mod:hover {
+    color: var(--ab-orange-dp);
+    border-color: var(--ab-orange-edge);
+  }
+
+  /* ── TECHNICAL EDGE ── */
+  .edge-content {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  .edge-card {
+    background: var(--ab-surface);
+    border: 1px solid var(--ab-line);
+    border-radius: 12px;
+    padding: 22px;
+    transition: all 0.2s ease;
+  }
+
+  .edge-card:hover {
+    border-color: var(--ab-orange-edge);
+    transform: translateY(-2px);
+  }
+
+  .edge-number {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--ab-blue);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .ab .edge-card h3 {
+    font-family: var(--ab-f);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ab-navy);
+    letter-spacing: -0.024em;
+    margin: 0 0 8px;
+    line-height: 1.35;
+  }
+
+  .edge-card p {
+    font-size: 13px;
+    color: var(--ab-dim);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── CONTACT ── */
+  .contact {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: var(--ab-navy);
+    border-radius: 14px;
+    padding: 24px 28px;
+    margin-bottom: 30px;
+  }
+
+  .ab .contact h3 {
+    font-family: var(--ab-f);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.026em;
+    margin: 0 0 4px;
+  }
+
+  .contact p {
+    font-size: 13px;
+    color: #A8C0D8;
+    margin: 0;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 9px;
+    flex-wrap: wrap;
+  }
+
+  .ab .clink {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding: 9px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    color: #fff;
+    transition: all 0.18s ease;
+  }
+
+  .ab .clink:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+
+  .ab .clink--go {
+    background: var(--ab-orange);
+    border-color: var(--ab-orange);
+  }
+
+  .ab .clink--go:hover {
+    background: #FF8A2B;
+    border-color: #FF8A2B;
+  }
+
+  .note {
+    border-top: 1px solid var(--ab-line);
+    padding-top: 18px;
+    margin: 0;
+    font-size: 11.5px;
+    color: var(--ab-faint);
+    line-height: 1.7;
+    max-width: 76ch;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1040px) {
+    .band-grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 30px 26px 26px;
+    }
+
+    .gaps {
+      grid-template-columns: 1fr;
+    }
+
+    .stats {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .edge-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .cover {
+      grid-template-columns: 1fr;
+    }
+
+    .stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .ab-shell {
+      padding: 0 16px;
+    }
+
+    .band {
+      border-radius: 14px;
+      margin-bottom: 30px;
+    }
+
+    .band-grid {
+      padding: 22px 18px 20px;
+    }
+
+    .contact {
+      padding: 20px;
+    }
+
+    .area {
+      min-width: 90px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ab *,
+    .ab *::before,
+    .ab *::after {
+      transition-duration: 0.001ms !important;
+    }
+  }
+</style>
