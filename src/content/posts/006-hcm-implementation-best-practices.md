@@ -3,8 +3,8 @@ title: 'HCM Implementation Best Practices: From Planning to Go-Live'
 description: 'Complete implementation guide covering project planning, phase execution, testing, training, go-live preparation, and post-implementation success.'
 pubDate: 2024-12-10
 author: 'Vaibhav Chavan'
-category: 'Training'
-tags: ['Implementation', 'Best Practices', 'Oracle Fusion', 'HCM', 'Project Management', 'Training']
+category: 'Trainings'
+tags: ['Implementation', 'Best Practices', 'Oracle Fusion', 'HCM', 'Project Management', 'Trainings']
 image: '/images/posts/006-implementation.jpg'
 readTime: 32
 draft: false
