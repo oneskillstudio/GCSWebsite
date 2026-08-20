@@ -2,7 +2,7 @@
 // src/components/Header.astro
 ---
 
-<header class="header">
+<header class="header" id="main-header">
   <div class="header-container">
     <!-- LOGO: Styled [GCS] badge + bold GrowCloudSkills -->
     <a href="/" class="logo">
@@ -21,6 +21,43 @@
   </div>
 </header>
 
+<script>
+  // Hide header on scroll down, show on scroll up
+  const header = document.getElementById('main-header');
+  let lastScrollY = 0;
+  let ticking = false;
+
+  function updateHeaderVisibility() {
+    const currentScrollY = window.scrollY;
+    
+    // Show header when at top
+    if (currentScrollY < 50) {
+      header.classList.remove('header--hidden');
+      ticking = false;
+      return;
+    }
+
+    // Hide on scroll down, show on scroll up
+    if (currentScrollY > lastScrollY) {
+      // Scrolling DOWN
+      header.classList.add('header--hidden');
+    } else {
+      // Scrolling UP
+      header.classList.remove('header--hidden');
+    }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateHeaderVisibility);
+      ticking = true;
+    }
+  });
+</script>
+
 <style>
   .header {
     background: white;
@@ -30,6 +67,13 @@
     top: 0;
     z-index: 100;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Hide header on scroll down */
+  .header--hidden {
+    transform: translateY(-100%);
+    box-shadow: none;
   }
 
   .header-container {
